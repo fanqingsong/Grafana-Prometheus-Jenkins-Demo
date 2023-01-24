@@ -1,6 +1,12 @@
 
 route:
-  receiver: 'slack'
+  repeat_interval: 24h
+  receiver: 'email'
 
 receivers:
-  - name: 'slack'
+- name: 'email'
+  email_configs:
+  - to: 'jakub1.jablonski@intel.com'
+    from: 'notifications-jenkins-jablonsk@intel.com'
+    smarthost: smtp.intel.com:25
+    require_tls: false
