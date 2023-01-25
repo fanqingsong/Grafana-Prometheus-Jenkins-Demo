@@ -19,6 +19,9 @@ services:
       - '--log.level=debug'
     ports:
       - 9090:9090
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.primecode.intel.com`)"
 
   grafana:
     image: grafana/grafana
@@ -33,6 +36,9 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.primecode.intel.com`)"
 
   alertmanager:
     image: prom/alertmanager
@@ -44,7 +50,24 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-    depends_on:
-      - prometheus
+      - '--web.external-url=http://alertmanager.primecode.intel.com'
 
-  
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.primecode.intel.com`)"
+
+
+  traefik:
+    image: "traefik:v2.9"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

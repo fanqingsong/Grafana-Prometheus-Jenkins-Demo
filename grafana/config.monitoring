@@ -4,3 +4,5 @@ HTTP_PROXY=http://proxy-chain.intel.com:912
 HTTPS_PROXY=http://proxy-chain.intel.com:912
 NO_PROXY="prometheus,alertmanager"
 GF_INSTALL_PLUGINS="grafana-clock-panel,grafana-simple-json-datasource"
+GF_SERVER_DOMAIN= grafana.primecode.intel.com
+GF_SERVER_ROOT_URL= http://grafana.primecode.intel.com
