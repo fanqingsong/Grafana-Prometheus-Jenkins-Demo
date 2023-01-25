@@ -1,6 +1,32 @@
 groups:
-  - name: host
+  - name: cje
     rules:
+    - alert: JenkinsPluginsWaitingForUpdate
+      expr: jenkins_plugins_withUpdate > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Jenkins - pending plugins updates
+        description: "{{$labels.instance}} have pending updates - {{ $value }} plugins have updates"
+
+    - alert: JenkinsBuildQueueWaringLevel
+      expr: jenkins_queue_size_value > 5
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Jenkins Build Queue have 5 or more items
+        description: "Build Queue on {{$labels.instance}} is now {{ $value }}"
+
+    - alert: JenkinsBuildQueueErrorLevel
+      expr: jenkins_queue_size_value > 10
+      for: 10m
+      labels:
+        severity: error
+      annotations:
+        summary: Jenkins Build Queue have 10 or more items
+        description: "Build Queue on {{$labels.instance}} is now {{ $value }}"
 
     - alert: JenkinsLastBuildFailed
       expr: default_jenkins_builds_last_build_result_ordinal{jenkins_job=~".*jablonsk.*", repo="NA"} == 2
