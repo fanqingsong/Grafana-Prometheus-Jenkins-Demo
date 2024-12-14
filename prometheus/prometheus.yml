@@ -23,10 +23,11 @@ scrape_configs:
     - targets: ['localhost:9090']
 
   - job_name: 'jenkins'
-    metrics_path: '/satg-fst-serverpmfw/prometheus/'
+    metrics_path: '/prometheus/'
     scrape_interval: 15s
-    scheme: https
-    tls_config:
-      insecure_skip_verify: true
+    scheme: http
+    # tls_config:
+    #   insecure_skip_verify: true
     static_configs:
-      - targets: ['cje-fm-owrp-prod03.devtools.intel.com']
+      # - targets: ['cje-fm-owrp-prod03.devtools.intel.com']
+      - targets: ['jenkins:8080']

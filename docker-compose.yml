@@ -3,6 +3,8 @@ version: '3.8'
 volumes:
   prometheus_data: {}
   grafana_data: {}
+  jenkins_data: {}
+
 
 services:
   prometheus:
@@ -71,3 +73,16 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  jenkins:
+    image: jenkins/jenkins:2.440.1
+    container_name: jenkins
+    privileged: true
+    restart: always
+    ports:
+      - "8066:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+
+
